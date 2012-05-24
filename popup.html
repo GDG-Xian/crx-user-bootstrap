@@ -18,7 +18,15 @@
 
         <script type="text/javascript" src="js/jquery-1.7.2.js"></script>
         <script type="text/javascript">
-        
+            $(function() {
+                $('#btn-save').click(function() {
+                    chrome.tabs.getSelected(function(tab) {
+                        chrome.tabs.sendRequest(tab.id, {greeting: "hello"}, function(response) {
+                            console.log(response);
+                        });
+                    })       
+                });
+            }); 
         </script>
     </head>
     <body>
@@ -60,7 +68,7 @@
                     </div>
                     <form class="form-inline">
                         <input type="text" id="name" class="input-medium" placeholder="Configuraton Name" />
-                        <a href="#" class="btn btn-success">Save</a>
+                        <a href="#" class="btn btn-success" id="btn-save">Save</a>
                     </form>
                 </li>
             </ul>

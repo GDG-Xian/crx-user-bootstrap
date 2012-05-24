@@ -12,7 +12,13 @@
     "default_icon": "icons/128.png",
     "default_popup": "popup.html"
   },
+  "content_scripts": [
+    {
+      "matches": ["http://twitter.github.com/bootstrap/download.html*"],
+      "js": ["js/jquery-1.7.2.js", "content.js"]
+    }
+  ],
   "permissions": [
-    "http://twitter.github.com/bootstrap/*"
+    "http://twitter.github.com/bootstrap/download.html*", "tabs"
   ]
 }

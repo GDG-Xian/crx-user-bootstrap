@@ -8,6 +8,7 @@
         <style type="text/css">
             body { width: 225px; margin: 0; padding: 0; }
             .container { padding: 4px 0; background: whiteSmoke; }
+            .alert { margin-bottom: 5px; }
             #cfg-list { margin: 0 0 0 0; padding: 0 5px 0 5px; }
             #cfg-list li a { cursor: default; }
             #cfg-list .name { cursor: pointer; }
@@ -54,8 +55,11 @@
                 </li>
                 <li class="divider"></li>
                 <li>
+                    <div class="alert alert-success">
+                    Enter a name to save!
+                    </div>
                     <form class="form-inline">
-                        <input type="text" id="name" class="input-medium" value="Configuraton Name" />
+                        <input type="text" id="name" class="input-medium" placeholder="Configuraton Name" />
                         <a href="#" class="btn btn-success">Save</a>
                     </form>
                 </li>

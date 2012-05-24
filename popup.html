@@ -7,25 +7,48 @@
         <link rel="stylesheet" type="text/css" href="css/bootstrap-responsive.min.css" />
         <style type="text/css">
             body { width: 225px; margin: 0; padding: 0; }
-            .container { padding: 4px 0; background: whiteSmoke; }
-            .alert { margin-bottom: 5px; }
+            .container { padding: 4px 0; } /* background: whiteSmoke; } */
+            .alert { margin-bottom: 5px; padding: 2px 5px; text-align: left; }
             #cfg-list { margin: 0 0 0 0; padding: 0 5px 0 5px; }
             #cfg-list li a { cursor: default; }
             #cfg-list .name { cursor: pointer; }
+            #cfg-list .icon { margin: 2px; }
             #cfg-list .action { float: right; cursor: pointer; margin-left: 5px; }
             #cfg-list form { margin-bottom: 0; }
+            .modal-footer { padding: 3px 5px;}
+            .form-inline { margin-bottom: 0; }
         </style>
 
         <script type="text/javascript" src="js/jquery-1.7.2.js"></script>
+        <script type="text/javascript" src="js/jquery.mustache.js"></script>
+        <script id="tpl-cfg-item" type="text/x-tmpl-mustache">
+            <li>
+                <a>
+                    <i class="icon icon-ok action close" title="Apply"></i>
+                    <i class="icon icon-remove action close" title="Remove"></i>
+                    <span class="name"><i class="icon icon-list-alt"></i> {{ name }}</span>
+                </a>
+            </li>
+        </script>
         <script type="text/javascript">
+            var background = chrome.extension.getBackgroundPage();
             $(function() {
                 $('#btn-save').click(function() {
                     chrome.tabs.getSelected(function(tab) {
-                        chrome.tabs.sendRequest(tab.id, {greeting: "hello"}, function(response) {
-                            console.log(response);
+                        chrome.tabs.sendRequest(tab.id, {type: "save"}, function(response) {
+                            var name = $.trim($('#name').val());
+                            $("#tpl-cfg-item").mustache({ name: name }).appendTo("#cfg-list");
+                            background.saveSettings(name, response.settings);
                         });
                     })       
                 });
+                
+                var names = background.getSettingNames();
+                for (var i = 0; i < names.length; i++) {
+                    $("#tpl-cfg-item").mustache({ name: names[i] }).appendTo("#cfg-list");
+                }
+                
+                document.getElementById('name').focus();
             }); 
         </script>
     </head>
@@ -33,45 +56,16 @@
         <div class="container">
             <ul class="nav nav-list" id="cfg-list">
                 <li class="nav-header">Configuration List</li>
-                <li>
-                    <a href="#">
-                        <span class="action close" title="Apply"><i class="icon-ok"></i></span>
-                        <span class="action close" title="Remove"><i class="icon-remove"></i></span>
-                        <span class="name"><i class="icon-list-alt"></i> Library</span>
-                    </a>
-                </li>
-                <li class="active">
-                    <a href="#">
-                        <span class="action close" title="Apply"><i class="icon-white icon-ok"></i></span>
-                        <span class="action close" title="Remove"><i class="icon-white icon-remove"></i></span>
-                        <span class="name"><i class="icon-white icon-list-alt"></i> Library</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <span class="action close" title="Apply"><i class="icon-ok"></i></span>
-                        <span class="action close" title="Remove"><i class="icon-remove"></i></span>
-                        <span class="name"><i class="icon-list-alt"></i> Library</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <span class="action close" title="Apply"><i class="icon-ok"></i></span>
-                        <span class="action close" title="Remove"><i class="icon-remove"></i></span>
-                        <span class="name"><i class="icon-list-alt"></i> Library</span>
-                    </a>
-                </li>
-                <li class="divider"></li>
-                <li>
-                    <div class="alert alert-success">
-                    Enter a name to save!
-                    </div>
-                    <form class="form-inline">
-                        <input type="text" id="name" class="input-medium" placeholder="Configuraton Name" />
-                        <a href="#" class="btn btn-success" id="btn-save">Save</a>
-                    </form>
-                </li>
             </ul>
+            <div class="modal-footer">
+                <div class="alert alert-success">
+                Enter a name to save!
+                </div>
+                <form class="form-inline">
+                    <input type="text" id="name" class="input-medium" placeholder="Configuraton Name" />
+                    <a href="#" class="btn btn-success" id="btn-save">Save</a>
+                </form>
+            </div>
         </div>
     </body>
 </html>

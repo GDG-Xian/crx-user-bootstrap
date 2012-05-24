@@ -7,6 +7,7 @@
       "48": "icons/48.png",
       "32": "icons/32.png"
   },
+  "background_page": "background.html",
   "browser_action": {
     "default_title": "User Bootstrap",
     "default_icon": "icons/128.png",
@@ -19,6 +20,6 @@
     }
   ],
   "permissions": [
-    "http://twitter.github.com/bootstrap/download.html*", "tabs"
+    "http://twitter.github.com/bootstrap/download.html*", "tabs", "unlimitedStorage"
   ]
 }

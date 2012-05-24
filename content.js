@@ -1,18 +1,58 @@
-function getSetting() {
-    var css = $("#components.download input:checked").map(function () { return this.value }).toArray();
-    var js = $("#plugins.download input:checked").map(function () { return this.value }).toArray();
-    var vars = {};
-
-    $("#variables.download input").each(function () {
-        $(this).val() && (vars[ $(this).prev().text() ] = $(this).val())
-    });
-    
-    return { 'js': js, 'css': css, 'vars': vars};
-}
-
 chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
-    console.log(request);
-    console.log(sender);
-    sendResponse(getSetting());
+    if (request.type = 'save') {
+        sendResponse({ settings: getSettings() });
+    } else if (request.type = 'apply') {
+        applySettings(request.settings);
+    }
 });
 
+// Get current bootstrap customize settings
+function getSettings() {
+    var components = {};
+    $('#components label.checkbox input[type=checkbox]').each(function() {
+        components[$.trim($(this).parent().text())] = $(this).attr('checked');
+    });
+
+    var plugins = {};
+    $('#plugins label.checkbox input[type=checkbox]').each(function() {
+        plugins[$.trim($(this).parent().text())] = $(this).attr('checked');
+    });
+
+    var variables = {};
+    $('#variables input[type=text]').each(function() {
+        var value = $.trim($(this).val());
+        if (value != '') {
+            variables[$(this).prev('label').text()] = value; 
+        }
+    });
+
+    return { 
+        'components': components, 
+        'plugins': plugins,
+        'variables': variables
+    };
+}
+
+// Restore setting to current bootstrap customize page
+function applySettings(settings) {
+    // Restore components settings
+    $('#components label.checkbox input[type=checkbox]').each(function() {
+        var checked = settings['components'][$.trim($(this).parent().text())];
+        $(this).attr('checked', checked);
+    });
+
+    // Restore plugins settings
+    $('#plugins label.checkbox input[type=checkbox]').each(function() {
+        var checked = settings['plugins'][$.trim($(this).parent().text())];
+        $(this).attr('checked', checked);
+    });
+   
+    // Restore variables settings
+    $('#variables input[type=text]').each(function() {
+        var key = $.trim($(this).prev('label').text());
+        var val = settings['variables'][key];
+        if (val) {
+            $(this).val(val);        
+        }
+    });
+}

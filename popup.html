@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" context="text/html; charset=utf-8" />
+        <title>User Bootstrap</title>
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" href="css/bootstrap-responsive.min.css" />
+        <style type="text/css">
+            body { width: 225px; margin: 0; padding: 0; }
+            .container { padding: 4px 0; background: whiteSmoke; }
+            #cfg-list { margin: 0 0 0 0; padding: 0 5px 0 5px; }
+            #cfg-list li a { cursor: default; }
+            #cfg-list .name { cursor: pointer; }
+            #cfg-list .action { float: right; cursor: pointer; margin-left: 5px; }
+            #cfg-list form { margin-bottom: 0; }
+        </style>
+
+        <script type="text/javascript" src="js/jquery-1.7.2.js"></script>
+        <script type="text/javascript">
+        
+        </script>
+    </head>
+    <body>
+        <div class="container">
+            <ul class="nav nav-list" id="cfg-list">
+                <li class="nav-header">Configuration List</li>
+                <li>
+                    <a href="#">
+                        <span class="action close" title="Apply"><i class="icon-ok"></i></span>
+                        <span class="action close" title="Remove"><i class="icon-remove"></i></span>
+                        <span class="name"><i class="icon-list-alt"></i> Library</span>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="#">
+                        <span class="action close" title="Apply"><i class="icon-white icon-ok"></i></span>
+                        <span class="action close" title="Remove"><i class="icon-white icon-remove"></i></span>
+                        <span class="name"><i class="icon-white icon-list-alt"></i> Library</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="action close" title="Apply"><i class="icon-ok"></i></span>
+                        <span class="action close" title="Remove"><i class="icon-remove"></i></span>
+                        <span class="name"><i class="icon-list-alt"></i> Library</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="action close" title="Apply"><i class="icon-ok"></i></span>
+                        <span class="action close" title="Remove"><i class="icon-remove"></i></span>
+                        <span class="name"><i class="icon-list-alt"></i> Library</span>
+                    </a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                    <form class="form-inline">
+                        <input type="text" id="name" class="input-medium" value="Configuraton Name" />
+                        <a href="#" class="btn btn-success">Save</a>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </body>
+</html>

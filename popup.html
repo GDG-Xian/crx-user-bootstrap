@@ -48,9 +48,9 @@
                     chrome.tabs.getSelected(function(tab) {
                         chrome.tabs.sendRequest(tab.id, {type: "save"}, function(response) {
                             var name = $.trim($('#name').val());
+                            background.saveSettings(name, response.settings);
                             if (!isConfigExists(name)) {
                                 $("#tpl-cfg-item").mustache({ name: name }).appendTo("#cfg-list");
-                                background.saveSettings(name, response.settings);
                             }
                         });
                     })       

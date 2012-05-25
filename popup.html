@@ -24,8 +24,8 @@
         <script id="tpl-cfg-item" type="text/x-tmpl-mustache">
             <li>
                 <a>
-                    <i class="icon icon-ok action close" title="Apply"></i>
-                    <i class="icon icon-remove action close" title="Remove"></i>
+                    <i class="icon icon-ok action close action-apply" title="Apply"></i>
+                    <i class="icon icon-remove action close action-remove" title="Remove"></i>
                     <span class="name"><i class="icon icon-list-alt"></i> {{ name }}</span>
                 </a>
             </li>
@@ -33,12 +33,25 @@
         <script type="text/javascript">
             var background = chrome.extension.getBackgroundPage();
             $(function() {
+                function isConfigExists(name) {
+                    var exists = false;
+                    $('.name').each(function() {
+                        if ($.trim($(this).text()) == name) {
+                            exists = true;
+                            return false;
+                        }
+                    });
+                    return exists;
+                }
+
                 $('#btn-save').click(function() {
                     chrome.tabs.getSelected(function(tab) {
                         chrome.tabs.sendRequest(tab.id, {type: "save"}, function(response) {
                             var name = $.trim($('#name').val());
-                            $("#tpl-cfg-item").mustache({ name: name }).appendTo("#cfg-list");
-                            background.saveSettings(name, response.settings);
+                            if (!isConfigExists(name)) {
+                                $("#tpl-cfg-item").mustache({ name: name }).appendTo("#cfg-list");
+                                background.saveSettings(name, response.settings);
+                            }
                         });
                     })       
                 });
@@ -48,7 +61,16 @@
                     $("#tpl-cfg-item").mustache({ name: names[i] }).appendTo("#cfg-list");
                 }
                 
-                document.getElementById('name').focus();
+                $(".action-apply").live("click", function(){ 
+                    var name = $.trim($(this).nextAll('.name').text());
+                    var settings = background.getSettings(name);
+                    chrome.tabs.getSelected(function(tab) {
+                        chrome.tabs.sendRequest(tab.id, { type: "apply", name: name, settings: settings }, function(response) {
+                        });
+                    });
+                }); 
+
+                $('#name').focus();
             }); 
         </script>
     </head>
@@ -58,7 +80,7 @@
                 <li class="nav-header">Configuration List</li>
             </ul>
             <div class="modal-footer">
-                <div class="alert alert-success">
+                <div class="alert alert-success" style="display: none">
                 Enter a name to save!
                 </div>
                 <form class="form-inline">

@@ -1,7 +1,7 @@
 chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
-    if (request.type = 'save') {
+    if (request.type == 'save') {
         sendResponse({ settings: getSettings() });
-    } else if (request.type = 'apply') {
+    } else if (request.type == 'apply') {
         applySettings(request.settings);
     }
 });
@@ -21,9 +21,7 @@ function getSettings() {
     var variables = {};
     $('#variables input[type=text]').each(function() {
         var value = $.trim($(this).val());
-        if (value != '') {
-            variables[$(this).prev('label').text()] = value; 
-        }
+        variables[$(this).prev('label').text()] = value; 
     });
 
     return { 

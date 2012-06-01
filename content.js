@@ -3,6 +3,7 @@ chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
         sendResponse({ settings: getSettings() });
     } else if (request.type == 'apply') {
         applySettings(request.settings);
+        sendResponse();
     }
 });
 

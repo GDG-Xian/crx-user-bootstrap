@@ -2,6 +2,10 @@ function saveSettings(name, settings) {
      localStorage[name] = JSON.stringify(settings);
 }
 
+function removeSettings(name) {
+    delete localStorage[name];
+}
+
 function getSettings(name) {
     return JSON.parse(localStorage[name]);
 }

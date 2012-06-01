@@ -24,8 +24,9 @@
         <script id="tpl-cfg-item" type="text/x-tmpl-mustache">
             <li>
                 <a>
-                    <i class="icon icon-ok action close action-apply" title="Apply"></i>
+                    <i class="icon icon-play action close action-apply" title="Apply"></i>
                     <i class="icon icon-remove action close action-remove" title="Remove"></i>
+                    <i class="icon icon-hdd action close action-save" title="Save"></i>
                     <span class="name"><i class="icon icon-list-alt"></i> {{ name }}</span>
                 </a>
             </li>
@@ -33,6 +34,13 @@
         <script type="text/javascript">
             var background = chrome.extension.getBackgroundPage();
             $(function() {
+                function showMessage(level, msg) {
+                    var message = $('#message');
+                    message.attr('class', 'alert alert-' + level);
+                    message.html(msg);
+                    message.fadeIn().delay(2000).fadeOut();
+                }
+
                 function isConfigExists(name) {
                     var exists = false;
                     $('.name').each(function() {
@@ -43,17 +51,44 @@
                     });
                     return exists;
                 }
-
-                $('#btn-save').click(function() {
+                
+                function saveCurrentSettings(name) {
                     chrome.tabs.getSelected(function(tab) {
                         chrome.tabs.sendRequest(tab.id, {type: "save"}, function(response) {
-                            var name = $.trim($('#name').val());
                             background.saveSettings(name, response.settings);
                             if (!isConfigExists(name)) {
                                 $("#tpl-cfg-item").mustache({ name: name }).appendTo("#cfg-list");
                             }
+                            showMessage('success', '<strong>' + name + '</strong> saved.');
                         });
                     })       
+                }
+
+                $('#btn-save').click(function() {
+                    var name = $.trim($('#name').val());
+                    saveCurrentSettings(name);
+                });
+                
+                $(".action-save").live("click", function(){ 
+                    var name = $.trim($(this).nextAll('.name').text());
+                    saveCurrentSettings(name);
+                }); 
+                
+                $(".action-apply").live("click", function(){ 
+                    var name = $.trim($(this).nextAll('.name').text());
+                    var settings = background.getSettings(name);
+                    chrome.tabs.getSelected(function(tab) {
+                        chrome.tabs.sendRequest(tab.id, { type: "apply", name: name, settings: settings }, function(response) {
+                            showMessage('success', '<strong>' + name + '</strong> applied.');
+                        });
+                    });
+                }); 
+                
+                $('.action-remove').live('click', function() {
+                    var name = $.trim($(this).nextAll('.name').text());
+                    background.removeSettings(name);
+                    $(this).parents('li').fadeOut().remove();
+                    showMessage('success', '<strong>' + name + '</strong> removed.');
                 });
                 
                 var names = background.getSettingNames();
@@ -61,14 +96,6 @@
                     $("#tpl-cfg-item").mustache({ name: names[i] }).appendTo("#cfg-list");
                 }
                 
-                $(".action-apply").live("click", function(){ 
-                    var name = $.trim($(this).nextAll('.name').text());
-                    var settings = background.getSettings(name);
-                    chrome.tabs.getSelected(function(tab) {
-                        chrome.tabs.sendRequest(tab.id, { type: "apply", name: name, settings: settings }, function(response) {
-                        });
-                    });
-                }); 
 
                 $('#name').focus();
             }); 
@@ -80,9 +107,7 @@
                 <li class="nav-header">Configuration List</li>
             </ul>
             <div class="modal-footer">
-                <div class="alert alert-success" style="display: none">
-                Enter a name to save!
-                </div>
+                <div id="message" style="display: none"></div>
                 <form class="form-inline">
                     <input type="text" id="name" class="input-medium" placeholder="Configuraton Name" />
                     <a href="#" class="btn btn-success" id="btn-save">Save</a>

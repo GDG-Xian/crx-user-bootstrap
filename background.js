@@ -1,3 +1,13 @@
+chrome.extension.onRequest.addListener(
+    function(request, sender, sendResponse) {
+        // If a bootstrap customize page is actived
+        // show page action icons in its location bar.
+        if (sender.tab && request.type == 'init') {
+            chrome.pageAction.show(sender.tab.id);
+        }
+    }
+);
+
 function saveSettings(name, settings) {
      localStorage[name] = JSON.stringify(settings);
 }

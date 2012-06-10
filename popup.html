@@ -17,6 +17,8 @@
             #cfg-list form { margin-bottom: 0; }
             .modal-footer { padding: 3px 5px;}
             .form-inline { margin-bottom: 0; }
+            .icon-import { background-image: url(img/icon-import.png); background-position: 0 0; }
+            .icon-export { background-image: url(img/icon-export.png); background-position: 0 0; }
         </style>
 
         <script type="text/javascript" src="js/jquery-1.7.2.js"></script>
@@ -73,7 +75,7 @@
                     }
                 });
                 
-                $(".action-save").live("click", function(){ 
+                $(".action-save").live("click", function() {
                     var name = $.trim($(this).nextAll('.name').text());
                     saveCurrentSettings(name);
                 }); 
@@ -94,12 +96,20 @@
                     $(this).parents('li').fadeOut().remove();
                     showMessage('success', '<strong>' + name + '</strong> removed.');
                 });
-                
+
+                $('.action-export').click(function() {
+                    background.exportSettings();
+                });
+
+                $('.action-import').click(function() {
+                    $('#import-field').trigger('click');
+                });
+
                 var names = background.getSettingNames();
                 for (var i = 0; i < names.length; i++) {
                     $("#tpl-cfg-item").mustache({ name: names[i] }).appendTo("#cfg-list");
                 }
-                
+
                 $('#name').focus();
             }); 
         </script>
@@ -107,7 +117,13 @@
     <body>
         <div class="container">
             <ul class="nav nav-list" id="cfg-list">
-                <li class="nav-header">Configuration List</li>
+                <li class="nav-header">
+                    <i class="icon icon-import close action action-import hide" title="Import List">
+                        <input type="file" id="import-field" class="hide"/>
+                    </i>
+                    <i class="icon icon-export close action action-export" title="Export List"></i>
+                    <span>Configuration List</span>
+                </li>
             </ul>
             <div class="modal-footer">
                 <div id="message" style="display: none"></div>

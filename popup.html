@@ -96,12 +96,20 @@
                     $(this).parents('li').fadeOut().remove();
                     showMessage('success', '<strong>' + name + '</strong> removed.');
                 });
-                
+
+                $('.action-export').click(function() {
+                    background.exportSettings();
+                });
+
+                $('.action-import').click(function() {
+                    $('#import-field').trigger('click');
+                });
+
                 var names = background.getSettingNames();
                 for (var i = 0; i < names.length; i++) {
                     $("#tpl-cfg-item").mustache({ name: names[i] }).appendTo("#cfg-list");
                 }
-                
+
                 $('#name').focus();
             }); 
         </script>
@@ -110,7 +118,9 @@
         <div class="container">
             <ul class="nav nav-list" id="cfg-list">
                 <li class="nav-header">
-                    <i class="icon icon-import close action action-import" title="Import List"></i>
+                    <i class="icon icon-import close action action-import hide" title="Import List">
+                        <input type="file" id="import-field" class="hide"/>
+                    </i>
                     <i class="icon icon-export close action action-export" title="Export List"></i>
                     <span>Configuration List</span>
                 </li>

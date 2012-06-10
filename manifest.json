@@ -21,6 +21,6 @@
     }
   ],
   "permissions": [
-    "http://twitter.github.com/bootstrap/download.html*", "tabs", "unlimitedStorage"
+    "http://twitter.github.com/bootstrap/download.html*", "tabs"
   ]
 }

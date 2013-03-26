@@ -1,6 +1,7 @@
 {
   "name": "User Bootstrap",
   "version": "1.1",
+  "manifest_version": 2,
   "description": "save and restore user configuration for Bootstrap's customize page http://twitter.github.com/bootstrap/download.html",
   "icons": {
       "128": "icons/128.png",
@@ -8,7 +9,10 @@
       "32": "icons/32.png",
       "16": "icons/16.png"
   },
-  "background_page": "background.html",
+  "background": { 
+      "scripts": ["background.js"],
+      "persistent": false
+  },
   "page_action": {
     "default_title": "User Bootstrap",
     "default_icon": "icons/128.png",
@@ -16,7 +20,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["http://twitter.github.com/bootstrap/download.html*"],
+      "matches": ["http://twitter.github.com/bootstrap/customize.html*"],
       "js": ["js/jquery-1.7.2.js", "content.js"]
     }
   ],

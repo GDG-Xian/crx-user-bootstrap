@@ -1,4 +1,4 @@
-chrome.extension.onRequest.addListener(
+chrome.extension.onMessage.addListener(
     function(request, sender, sendResponse) {
         // If a bootstrap customize page is actived
         // show page action icons in its location bar.

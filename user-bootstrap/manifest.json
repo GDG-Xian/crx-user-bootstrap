@@ -2,7 +2,7 @@
   "name": "User Bootstrap",
   "version": "1.1",
   "manifest_version": 2,
-  "description": "save and restore user configuration for Bootstrap's customize page http://twitter.github.com/bootstrap/download.html",
+  "description": "save and restore user configuration for Bootstrap's customize page http://twitter.github.com/bootstrap/customize.html",
   "icons": {
       "128": "icons/128.png",
       "48": "icons/48.png",
@@ -25,6 +25,6 @@
     }
   ],
   "permissions": [
-    "http://twitter.github.com/bootstrap/download.html*", "tabs"
+    "http://twitter.github.com/bootstrap/customize.html*", "tabs"
   ]
 }

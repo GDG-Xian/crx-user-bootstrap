@@ -5,7 +5,7 @@ A chrome extension to save and restore user configuration for Bootstrap's custom
 
 ## Update
 
-**Version 1.2 2013-03-28**
+**Version 1.3 2013-03-28**
 
  * Update to support latest bootstrap customize page 
  * Update to support latest chromium browser. 

@@ -1,4 +1,4 @@
-chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
+chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
     if (request.type == 'save') {
         sendResponse({ settings: getSettings() });
     } else if (request.type == 'apply') {
@@ -62,4 +62,4 @@ function applySettings(settings) {
     });
 }
 
-chrome.extension.sendRequest({ type: 'init' });
+chrome.extension.sendMessage({ type: 'init' });

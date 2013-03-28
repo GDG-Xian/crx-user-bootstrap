@@ -1,4 +1,4 @@
-chrome.extension.onRequest.addListener(
+chrome.extension.onMessage.addListener(
     function(request, sender, sendResponse) {
         // If a bootstrap customize page is actived
         // show page action icons in its location bar.
@@ -30,24 +30,22 @@ function getSettingNames() {
 
 // Export File
 function exportSettings() {
+    console.log('Exporting user configurations...')
     window.webkitRequestFileSystem(window.TEMPORARY, 1024 * 1024, function(fs) {
         fs.root.getFile('bootstrap-settings.json', {create: true}, function(fileEntry) {
             fileEntry.createWriter(function(fileWriter) {
-                var builder = new WebKitBlobBuilder();
-                
                 // Read all settings
                 var settingsList = {};
                 for (var name in localStorage) {
                     settingsList[name] = getSettings(name);
                 }
 
-                // Write settings as json
-                builder.append(JSON.stringify(settingsList));
-
-                console.log('Writing bootstrap-settings.json');
-                var blob = builder.getBlob('text/plain');
+                // TODO: Auto download file instead of opening a text page.
+                console.log('  Creating bootstrap-settings.json');
+                var blob = new Blob([JSON.stringify(settingsList)], {type: "application/json"});
                 fileWriter.onwriteend = function() {
-                    chrome.tabs.create({ "url":fileEntry.toURL(), 'selected': false });
+                    console.log('  File created, start downloading..')
+                    chrome.tabs.create({"url": fileEntry.toURL(), 'selected': true });
                 };
                 fileWriter.write(blob);
             }, fsErrorHandler);
@@ -80,5 +78,5 @@ function fsErrorHandler(e) {
       break;
   };
 
-  console.Log('Error: ' + msg);
+  console.error('Error: ' + msg);
 }

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" context="text/html; charset=utf-8" />
+        <title>User Bootstrap</title>
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" href="css/bootstrap-responsive.min.css" />
+        <style type="text/css">
+            body { width: 226px; margin: 0; padding: 0; }
+            .container { padding: 4px 0; } /* background: whiteSmoke; } */
+            .alert { margin-bottom: 5px; padding: 2px 5px; text-align: left; }
+            #cfg-list { margin: 0 0 0 0; padding: 0 5px 0 5px; }
+            #cfg-list li a { cursor: default; }
+            #cfg-list .name { cursor: pointer; }
+            #cfg-list .icon { margin: 2px; }
+            #cfg-list .action { float: right; cursor: pointer; margin-left: 5px; }
+            #cfg-list form { margin-bottom: 0; }
+            .modal-footer { padding: 3px 5px;}
+            .form-inline { margin-bottom: 0; }
+            .icon-import { background-image: url(img/icon-import.png); background-position: 0 0; }
+            .icon-export { background-image: url(img/icon-export.png); background-position: 0 0; }
+        </style>
+
+        <script type="text/javascript" src="js/jquery-1.7.2.js"></script>
+        <script type="text/javascript" src="js/jquery.mustache.js"></script>
+        <script id="tpl-cfg-item" type="text/x-tmpl-mustache">
+            <li>
+                <a>
+                    <i class="icon icon-play action close action-apply" title="Apply"></i>
+                    <i class="icon icon-remove action close action-remove" title="Remove"></i>
+                    <i class="icon icon-hdd action close action-save" title="Save"></i>
+                    <span class="name"><i class="icon icon-list-alt"></i> {{ name }}</span>
+                </a>
+            </li>
+        </script>
+        <script type="text/javascript" src="popup.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <ul class="nav nav-list" id="cfg-list">
+                <li class="nav-header">
+                    <i class="icon icon-import close action action-import hide" title="Import List">
+                        <input type="file" id="import-field" class="hide"/>
+                    </i>
+                    <i class="icon icon-export close action action-export" title="Export List"></i>
+                    <span>Configuration List</span>
+                </li>
+            </ul>
+            <div class="modal-footer">
+                <div id="message" style="display: none"></div>
+                <form class="form-inline">
+                    <input type="text" id="name" class="input-medium" placeholder="Configuraton Name" />
+                    <a href="#" class="btn btn-success" id="btn-save">Save</a>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>
